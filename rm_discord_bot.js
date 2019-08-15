@@ -137,6 +137,11 @@ client.on("message", async message => {
         message.channel.bulkDelete(fetched)
             .catch(error => message.reply(`Couldn't delete messages because of: ${error}`));
     }
+
+    if (command === "roulette") {
+        // need to figure out how to put xp or points into a db or rather what type of db
+        const m = await message.channel.send("Pulls trigger");
+    }
 });
 
 
