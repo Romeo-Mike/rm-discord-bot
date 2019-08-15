@@ -12,3 +12,7 @@ Contents of file:
 
 File is in .gitignore so it should be excluded from your commits.
 Don't be silly and put passwords/keys in files that you do commit. If you do, it's to the Gulag with you!
+
+## What the hell are we doing here?
+No idea. Perhaps:
+1. Automate the roulette/stats reset
