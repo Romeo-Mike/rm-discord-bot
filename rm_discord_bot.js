@@ -13,6 +13,8 @@ client.on('ready', () => {
             console.log(` -- ${channel.name} (${channel.type}) - ${channel.id}`)
         })
     })
+    var generalChannel = client.channels.get("611495158776594449")
+    generalChannel.send("To the Gulag!") 
 })
 
 
