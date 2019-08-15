@@ -7,6 +7,8 @@
 ## Getting started notes:
 You will need to create a file `tokens_and_other_sensitive_crap.js` in the root directory.
 Contents of file: 
+
 ```module.exports = { discord_bot_api_key: "Super Secret Token" };```
+
 File is in .gitignore so it should be excluded from your commits.
 Don't be silly and put passwords/keys in files that you do commit. If you do, it's to the Gulag with you!
