@@ -1,6 +1,7 @@
 const Discord = require('discord.js')
 const client = new Discord.Client()
-var config = require('./tokens_and_other_sensitive_crap.js');
+const config = require("./config.json");
+const private = require('./tokens_and_other_sensitive_crap.js');
 
 client.on('ready', () => {
     console.log("Connected as " + client.user.tag)
@@ -139,4 +140,4 @@ client.on("message", async message => {
 });
 
 
-client.login(config.token)
+client.login(private.token)
