@@ -2,7 +2,8 @@
   "name": "rm-discord-bot",
   "main": "rm_discord_bot.js",
   "dependencies": {
-    "discord.js": "^11.5.1"
+    "discord.js": "^11.5.1",
+    "lowdb": "^1.0.0"
   },
   "repository": {
     "type": "git",
