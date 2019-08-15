@@ -1,0 +1,24 @@
+{
+  "name": "rm-discord-bot",
+  "main": "rm_discord_bot.js",
+  "dependencies": {
+    "discord.js": "^11.5.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CH-Potter/rm-discord-bot.git"
+  },
+  "license": "BSD-3-Clause",
+  "description": "* https://gist.github.com/koad/316b265a91d933fd1b62dddfcc3ff584 \r * https://www.devdungeon.com/content/javascript-discord-bot-tutorial\r * https://gist.github.com/eslachance/3349734a98d30011bb202f47342601d3",
+  "bugs": {
+    "url": "https://github.com/CH-Potter/rm-discord-bot/issues"
+  },
+  "homepage": "https://github.com/CH-Potter/rm-discord-bot#readme",
+  "version": "1.0.0",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Romeo Mike",
+  "keywords": []
+}
