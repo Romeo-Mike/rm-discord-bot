@@ -59,3 +59,4 @@ typings/
 
 # next.js build output
 .next
+tokens_and_other_sensitive_crap.js
