@@ -19,7 +19,7 @@ client.on('ready', () => {
     // Example of changing the bot's playing game to something useful. `client.user` is what the
     // docs refer to as the "ClientUser".
     client.user.setActivity(`Serving ${client.guilds.size} servers`);
-    var generalChannel = client.channels.get("611495158776594449")
+    var generalChannel = client.channels.get("611511292183969803")
     generalChannel.send("To the Gulag!")
 })
 
