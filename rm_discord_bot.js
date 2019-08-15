@@ -139,8 +139,7 @@ client.on("message", async message => {
     }
 
     if (command === "roulette") {
-        // Calculates ping between sending a message and editing it, giving a nice round-trip latency.
-        // The second ping is an average latency between the bot and the websocket server (one-way, not round-trip)
+        // need to figure out how to put xp or points into a db or rather what type of db
         const m = await message.channel.send("Pulls trigger");
     }
 });
