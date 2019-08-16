@@ -3,6 +3,7 @@ const client = new Discord.Client();
 const config = require("./config.json");
 const private = require('./tokens_and_other_sensitive_crap.js');
 const rankings = require('./rankings.js');
+const Attachment = require('discord.js');
 
 client.on('ready', () => {
     console.log("Connected as " + client.user.tag)
@@ -217,7 +218,8 @@ client.on("message", async message => {
         //if (message.author.bot) return;
         let username = message.author.username;
         let avurl =  message.author.avatarURL;
-        message.channel.send("hi! " + username + "\n" + avurl);
+        const attachment = new Attachment(avurl);
+        message.channel.send(attachment);
     }
 });
 
