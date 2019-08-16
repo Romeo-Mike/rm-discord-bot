@@ -56,18 +56,6 @@ client.on("message", async message => {
             return;
         }
 
-        try {
-            console.log("Message Rx:\n\tUsername: " + (message.author.username) + "\n\t" +
-                "Avatar: " + (message.author.avatar) + "\n\t" +
-                "Avatar URL: " + (message.author.avatarURL) + "\n\t" +
-                "ID: " + (message.author.id)
-            );
-            rankings.addPoints(message.author, 1);
-        } catch (error) {
-            message.channel.send("I crashed...\n``` " + error + " ```");
-            client.destroy();
-        }
-
         // Here we separate our "command" name, and our "arguments" for the command. 
         // e.g. if we have the message "+say Is this the real life?" , we'll get the following:
         // command = say
