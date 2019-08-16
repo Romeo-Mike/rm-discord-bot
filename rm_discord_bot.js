@@ -1,9 +1,19 @@
 const Discord = require('discord.js');
+const fs = require('fs');
 const client = new Discord.Client();
+
 const config = require("./config.json");
 const private = require('./tokens_and_other_sensitive_crap.js');
 const rankings = require('./rankings.js');
+
 const activity = 'fermentation of yeast'
+
+client.commands = new Discord.Collection();
+const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
+for (const file of commandFiles) {
+	const command = require(`./commands/${file}`);
+	client.commands.set(command.name, command);
+}
 
 client.on('ready', () => {
     console.log("Connected as " + client.user.tag)
@@ -63,78 +73,13 @@ client.on("message", async message => {
         const args = message.content.slice(config.prefix.length).trim().split(/ +/g);
         const command = args.shift().toLowerCase();
 
-        if (command === "embed") {
-            message.channel.send({
-                embed: {
-                    color: 3447003,
-                    author: {
-                        name: client.user.username,
-                        icon_url: client.user.avatarURL
-                    },
-                    title: "This is an embed",
-                    url: "http://google.com",
-                    description: "This is a test embed to showcase what they look like and what they can do.",
-                    fields: [{
-                        name: "Fields",
-                        value: "They can have different fields with small headlines."
-                    },
-                    {
-                        name: "Masked links",
-                        value: "You can put [masked links](http://google.com) inside of rich embeds."
-                    },
-                    {
-                        name: "Markdown",
-                        value: "You can put all the *usual* **__Markdown__** inside of them."
-                    }
-                    ],
-                    timestamp: new Date(),
-                    footer: {
-                        icon_url: client.user.avatarURL,
-                        text: "© Example"
-                    }
-                }
-            });
-        }
+        if (!client.commands.has(command)) return;
 
-        if (command === "reset") {
-            rankings.resetPoints(message.author)
-            message.channel.send(message.author.username + " got reset! Total Points: " + rankings.getScore(message.author));
-            return
-        }
-        if (command === "score") {
-
-            message.channel.send(message.author.username + " has " + rankings.getScore(message.author) + " points.");
-            return
-        }
-        if (command === "leaderboard") {
-            let leaders = rankings.getLeaderboard(5);
-            let top_dawg = leaders[0];
-            let top_dawg_avatar = 'https://cdn.discordapp.com/avatars/' + top_dawg.id + '/' + top_dawg.avatar + '.png?size=64'
-            var embed = new Discord.RichEmbed()
-                .setTitle("Leaderboard")
-                .setThumbnail(top_dawg_avatar)                
-            leaders.forEach(leader => {
-                embed.fields.push(
-                    {
-                        'name': (leaders.indexOf(leader) + 1) + ". " + leader.name,
-                        'value': leader.score + " points."
-                    }
-                );
-            });
-            message.channel.send(embed);
-            return
-        }
-        if (command === "roulette") {
-            var theone = Math.floor(Math.random() * 6)
-            if (theone <= 1) {
-                message.channel.send("Bang. You\'re dead! No points for you...")
-                rankings.resetPoints(message.author)
-            }
-            else {
-                message.channel.send("Click! " + message.author.username + " survived! +10 points!")
-                rankings.addPoints(message.author, 10);
-            }
-            return
+        try {
+            client.commands.get(command).execute(message, args);
+        } catch (error) {
+            console.error(error);
+            message.reply('there was an error trying to execute that command!');
         }
 
         // Let's go with a few common example commands! Feel free to delete or change those.
@@ -146,86 +91,6 @@ client.on("message", async message => {
             m.edit(`Pong! Latency is ${m.createdTimestamp - message.createdTimestamp}ms. API Latency is ${Math.round(client.ping)}ms`);
         }
 
-        if (command === "say") {
-            // makes the bot say something and delete the message. As an example, it's open to anyone to use. 
-            // To get the "message" itself we join the `args` back into a string with spaces: 
-            const sayMessage = args.join(" ");
-            // Then we delete the command message (sneaky, right?). The catch just ignores the error with a cute smiley thing.
-            message.delete().catch(O_o => { });
-            // And we get the bot to say the thing: 
-            message.channel.send(sayMessage);
-        }
-
-        if (command === "kick") {
-            // This command must be limited to mods and admins. In this example we just hardcode the role names.
-            // Please read on Array.some() to understand this bit: 
-            // https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/some?
-            if (!message.member.roles.some(r => ["Administrator", "Moderator"].includes(r.name)))
-                return message.reply("Sorry, you don't have permissions to use this!");
-
-            // Let's first check if we have a member and if we can kick them!
-            // message.mentions.members is a collection of people that have been mentioned, as GuildMembers.
-            // We can also support getting the member by ID, which would be args[0]
-            let member = message.mentions.members.first() || message.guild.members.get(args[0]);
-            if (!member)
-                return message.reply("Please mention a valid member of this server");
-            if (!member.kickable)
-                return message.reply("I cannot kick this user! Do they have a higher role? Do I have kick permissions?");
-
-            // slice(1) removes the first part, which here should be the user mention or ID
-            // join(' ') takes all the various parts to make it a single string.
-            let reason = args.slice(1).join(' ');
-            if (!reason) reason = "No reason provided";
-
-            // Now, time for a swift kick in the nuts!
-            await member.kick(reason)
-                .catch(error => message.reply(`Sorry ${message.author} I couldn't kick because of : ${error}`));
-            message.reply(`${member.user.tag} has been kicked by ${message.author.tag} because: ${reason}`);
-
-        }
-
-        if (command === "ban") {
-            // Most of this command is identical to kick, except that here we'll only let admins do it.
-            // In the real world mods could ban too, but this is just an example, right? ;)
-            if (!message.member.roles.some(r => ["Administrator"].includes(r.name)))
-                return message.reply("Sorry, you don't have permissions to use this!");
-
-            let member = message.mentions.members.first();
-            if (!member)
-                return message.reply("Please mention a valid member of this server");
-            if (!member.bannable)
-                return message.reply("I cannot ban this user! Do they have a higher role? Do I have ban permissions?");
-
-            let reason = args.slice(1).join(' ');
-            if (!reason) reason = "No reason provided";
-
-            await member.ban(reason)
-                .catch(error => message.reply(`Sorry ${message.author} I couldn't ban because of : ${error}`));
-            message.reply(`${member.user.tag} has been banned by ${message.author.tag} because: ${reason}`);
-        }
-
-        if (command === "purge") {
-            // This command removes all messages from all users in the channel, up to 100.
-
-            // get the delete count, as an actual number.
-            const deleteCount = parseInt(args[0], 10);
-
-            // Ooooh nice, combined conditions. <3
-            if (!deleteCount || deleteCount < 2 || deleteCount > 100)
-                return message.reply("Please provide a number between 2 and 100 for the number of messages to delete");
-
-            // So we get our messages, and delete them. Simple enough, right?
-            const fetched = await message.channel.fetchMessages({ limit: deleteCount });
-            message.channel.bulkDelete(fetched)
-                .catch(error => message.reply(`Couldn't delete messages because of: ${error}`));
-        }
-
-        if (command === "showme") {
-            var embed = new Discord.RichEmbed()
-                .setTitle(message.author.username)
-                .setImage('https://cdn.discordapp.com/avatars/' + message.author.id + '/' + message.author.avatar + '.png?size=64')
-            message.channel.send(embed);
-        }
     } catch (error) {
         message.channel.send("I crashed...\n``` " + error + " ```");
         client.destroy();
