@@ -72,12 +72,12 @@ client.on("message", async message => {
         return
     }
     if (command === "leaderboard") {        
-        let message = "Leaderboard:\n";
+        let payload = "Leaderboard:\n";
         let leaders = rankings.getLeaderboard(5);
-        // leaders.forEach(leader => {
-        //     message = message + "\t" + leader.name; 
-        // });             
-        message.channel.send(message);  
+        leaders.forEach(leader => {
+            payload = payload + "\t" + leader.name + " @ " + leader.score + "\n"; 
+        });             
+        message.channel.send(payload);  
         return
     }
     if (command === "roulette") {
