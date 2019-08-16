@@ -2,7 +2,7 @@
   "users": [
     {
       "name": "Muppet...",
-      "score": 22
+      "score": 25
     },
     {
       "name": "Skippy",
@@ -42,7 +42,11 @@
     },
     {
       "name": "Ovenmit",
-      "score": 6
+      "score": 2
+    },
+    {
+      "name": "[RM] Joebanguly Berddydamagedov",
+      "score": 1
     }
   ]
 }

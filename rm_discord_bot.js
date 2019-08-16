@@ -213,9 +213,11 @@ client.on("message", async message => {
             .catch(error => message.reply(`Couldn't delete messages because of: ${error}`));
     }
 
-    if (command === "roulette") {
-        // need to figure out how to put xp or points into a db or rather what type of db
-        const m = await message.channel.send("Pulls trigger");
+    if (command === "showme") {
+        //if (message.author.bot) return;
+        let username = message.author.username;
+        let avurl =  message.author.avatarURL;
+        message.channel.send("hi! " + username + "\n" + avurl);
     }
 });
 
