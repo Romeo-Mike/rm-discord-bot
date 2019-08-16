@@ -50,7 +50,6 @@ client.on("message", async message => {
     // which is set in the configuration file.
     if (message.content.indexOf(config.prefix) !== 0) {
         rankings.addPoints(username, 1);
-        message.channel.send(username + " got a point! Total Points: " + rankings.getScore(username));
         return;
     }
 
