@@ -1,7 +1,8 @@
-const Discord = require('discord.js')
-const client = new Discord.Client()
+const Discord = require('discord.js');
+const client = new Discord.Client();
 const config = require("./config.json");
 const private = require('./tokens_and_other_sensitive_crap.js');
+const rankings = require('./rankings.js');
 
 client.on('ready', () => {
     console.log("Connected as " + client.user.tag)
@@ -20,7 +21,7 @@ client.on('ready', () => {
     // docs refer to as the "ClientUser".
     client.user.setActivity(`Serving ${client.guilds.size} servers`);
     var generalChannel = client.channels.get("611511292183969803")
-    generalChannel.send("To the Gulag!")
+    // generalChannel.send("To the Gulag!")
 })
 
 
@@ -43,10 +44,15 @@ client.on("message", async message => {
     // It's good practice to ignore other bots. This also makes your bot ignore itself
     // and not get into a spam loop (we call that "botception").
     if (message.author.bot) return;
-
+    let username = message.author.username;
+    console.log("Message from: " + username);
     // Also good practice to ignore any message that does not start with our prefix, 
     // which is set in the configuration file.
-    if (message.content.indexOf(config.prefix) !== 0) return;
+    if (message.content.indexOf(config.prefix) !== 0){ 
+        rankings.addPoints(username,1);
+        message.channel.send(username + " got a point! Total Points: " + rankings.getScore(username));
+        return;
+    }
 
     // Here we separate our "command" name, and our "arguments" for the command. 
     // e.g. if we have the message "+say Is this the real life?" , we'll get the following:
@@ -54,6 +60,29 @@ client.on("message", async message => {
     // args = ["Is", "this", "the", "real", "life?"]
     const args = message.content.slice(config.prefix.length).trim().split(/ +/g);
     const command = args.shift().toLowerCase();
+
+    if (command === "reset") {
+        rankings.resetPoints(username)
+        message.channel.send(username + " got reset! Total Points: " + rankings.getScore(username));
+        return
+    }
+    if (command === "score") {
+        
+        message.channel.send(username + " has " + rankings.getScore(username) + " points." );
+        return
+    }
+    if (command === "roulette") {
+        var theone = Math.floor(Math.random() * 6)
+        if (theone <= 1){
+            message.channel.send("Bang. You\'re dead! No points for you...")
+            rankings.resetPoints(username)
+        }
+        else {
+            message.channel.send("Click! "+ username+ " survived! +10 points!")
+            rankings.addPoints(username,10);
+        }
+        return
+    }
 
     // Let's go with a few common example commands! Feel free to delete or change those.
 
