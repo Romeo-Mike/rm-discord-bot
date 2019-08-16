@@ -19,7 +19,7 @@ client.on('ready', () => {
     console.log(`Bot has started, with ${client.users.size} users, in ${client.channels.size} channels of ${client.guilds.size} guilds.`);
     // Example of changing the bot's playing game to something useful. `client.user` is what the
     // docs refer to as the "ClientUser".
-    client.user.setActivity(`Serving ${client.guilds.size} servers`);
+    client.user.setActivity(`Overseeing the Gulag`);
     var generalChannel = client.channels.get("611511292183969803")
     // generalChannel.send("To the Gulag!")
 })
@@ -28,13 +28,13 @@ client.on('ready', () => {
 client.on("guildCreate", guild => {
     // This event triggers when the bot joins a guild.
     console.log(`New guild joined: ${guild.name} (id: ${guild.id}). This guild has ${guild.memberCount} members!`);
-    client.user.setActivity(`Serving ${client.guilds.size} servers`);
+    client.user.setActivity(`Overseeing the Gulag`);
 });
 
 client.on("guildDelete", guild => {
     // this event triggers when the bot is removed from a guild.
     console.log(`I have been removed from: ${guild.name} (id: ${guild.id})`);
-    client.user.setActivity(`Serving ${client.guilds.size} servers`);
+    client.user.setActivity(`Overseeing the Gulag`);
 });
 
 
@@ -48,8 +48,8 @@ client.on("message", async message => {
     console.log("Message from: " + username);
     // Also good practice to ignore any message that does not start with our prefix, 
     // which is set in the configuration file.
-    if (message.content.indexOf(config.prefix) !== 0){ 
-        rankings.addPoints(username,1);
+    if (message.content.indexOf(config.prefix) !== 0) {
+        rankings.addPoints(username, 1);
         message.channel.send(username + " got a point! Total Points: " + rankings.getScore(username));
         return;
     }
@@ -61,34 +61,71 @@ client.on("message", async message => {
     const args = message.content.slice(config.prefix.length).trim().split(/ +/g);
     const command = args.shift().toLowerCase();
 
+    if (command === "embed") {
+        message.channel.send({
+            embed: {
+                color: 3447003,
+                author: {
+                    name: client.user.username,
+                    icon_url: client.user.avatarURL
+                },
+                title: "This is an embed",
+                url: "http://google.com",
+                description: "This is a test embed to showcase what they look like and what they can do.",
+                fields: [{
+                    name: "Fields",
+                    value: "They can have different fields with small headlines."
+                },
+                {
+                    name: "Masked links",
+                    value: "You can put [masked links](http://google.com) inside of rich embeds."
+                },
+                {
+                    name: "Markdown",
+                    value: "You can put all the *usual* **__Markdown__** inside of them."
+                }
+                ],
+                timestamp: new Date(),
+                footer: {
+                    icon_url: client.user.avatarURL,
+                    text: "© Example"
+                }
+            }
+        });
+    }
+
     if (command === "reset") {
         rankings.resetPoints(username)
         message.channel.send(username + " got reset! Total Points: " + rankings.getScore(username));
         return
     }
     if (command === "score") {
-        
-        message.channel.send(username + " has " + rankings.getScore(username) + " points." );
+
+        message.channel.send(username + " has " + rankings.getScore(username) + " points.");
         return
     }
-    if (command === "leaderboard") {        
-        let payload = "Leaderboard:\n";
+    if (command === "leaderboard") {
+        let payload = {embed:{}};
+        payload.embed.title = "Leaderboard:";        
+        payload.embed.fields = [];
+        console.log(payload);
+        
         let leaders = rankings.getLeaderboard(5);
         leaders.forEach(leader => {
-            payload = payload + "\t" + leader.name + " @ " + leader.score + "\n"; 
-        });             
-        message.channel.send(payload);  
+            payload.embed.fields.push({'name': (leaders.indexOf(leader) + 1) + ". " + leader.name, 'value':  leader.score + " points."});
+        });
+        message.channel.send(payload);
         return
     }
     if (command === "roulette") {
         var theone = Math.floor(Math.random() * 6)
-        if (theone <= 1){
+        if (theone <= 1) {
             message.channel.send("Bang. You\'re dead! No points for you...")
             rankings.resetPoints(username)
         }
         else {
-            message.channel.send("Click! "+ username+ " survived! +10 points!")
-            rankings.addPoints(username,10);
+            message.channel.send("Click! " + username + " survived! +10 points!")
+            rankings.addPoints(username, 10);
         }
         return
     }

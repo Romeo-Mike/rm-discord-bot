@@ -47,7 +47,7 @@ module.exports = {
     },
     getLeaderboard: function (count) {
             return db.get("users")
-                .sortBy("score")
+                .orderBy("score", 'desc')
                 .take(count)
                 .value();
     }
