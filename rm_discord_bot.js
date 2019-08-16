@@ -1,7 +1,7 @@
 const Discord = require('discord.js');
 const fs = require('fs');
 const client = new Discord.Client();
-
+const Attachment = new Discord.Attachment();
 const config = require("./config.json");
 const private = require('./tokens_and_other_sensitive_crap.js');
 const rankings = require('./rankings.js');
