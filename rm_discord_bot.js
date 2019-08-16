@@ -1,5 +1,6 @@
 const Discord = require('discord.js');
 const client = new Discord.Client();
+const Attachment = new Discord.Attachment();
 const config = require("./config.json");
 const private = require('./tokens_and_other_sensitive_crap.js');
 const rankings = require('./rankings.js');
@@ -221,6 +222,11 @@ client.on("message", async message => {
         }
 
         if (command === "showme") {
+            //delete bot command
+                message.delete()
+                .then(msg => console.log(`Deleted message from ${msg.author.username}`))
+                .catch(console.error);
+            //=========
             var embed = new Discord.RichEmbed()
                 .setTitle(message.author.username)
                 .setImage('https://cdn.discordapp.com/avatars/' + message.author.id + '/' + message.author.avatar + '.png?size=64')
