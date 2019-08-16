@@ -44,6 +44,12 @@ module.exports = {
         } else {
             console.log(user + " not found");
         }
+    },
+    getLeaderboard: function (count) {
+            return db.get("users")
+                .sortBy("score")
+                .take(count)
+                .value();
     }
 }
 
@@ -51,15 +57,5 @@ module.exports = {
 db.defaults({ users: [] })
     .write()
 
-//Tests
-if (0) {
-    let test_user = "muppet";
-    this.addPoints(test_user, 1);
-    this.resetPoints(test_user);
-    this.addPoints(test_user, 1);
-    this.addPoints(test_user, 1);
-    this.addPoints(test_user, 1);
-    console.log(test_user + " " + this.getScore(test_user));
-}
 
 

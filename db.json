@@ -1,15 +1,48 @@
 {
   "users": [
     {
-      "name": "muppet",
+      "name": "Muppet...",
+      "score": 31
+    },
+    {
+      "name": "Skippy",
+      "score": 2
+    },
+    {
+      "name": "Fluppet",
+      "score": 1
+    },
+    {
+      "name": "Fred",
+      "score": 16
+    },
+    {
+      "name": "Joe",
       "score": 0
     },
     {
-      "score": 15
+      "name": "Alleh",
+      "score": 64
     },
     {
-      "name": "Muppet...",
-      "score": 20
+      "name": "Foxxy",
+      "score": 30
+    },
+    {
+      "name": "Randall",
+      "score": 2
+    },
+    {
+      "name": "Other guy",
+      "score": 44
+    },
+    {
+      "name": "Steve",
+      "score": 66
+    },
+    {
+      "name": "Ovenmit",
+      "score": 2
     }
   ]
 }

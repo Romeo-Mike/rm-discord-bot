@@ -71,6 +71,15 @@ client.on("message", async message => {
         message.channel.send(username + " has " + rankings.getScore(username) + " points." );
         return
     }
+    if (command === "leaderboard") {        
+        let message = "Leaderboard:\n";
+        let leaders = rankings.getLeaderboard(5);
+        // leaders.forEach(leader => {
+        //     message = message + "\t" + leader.name; 
+        // });             
+        message.channel.send(message);  
+        return
+    }
     if (command === "roulette") {
         var theone = Math.floor(Math.random() * 6)
         if (theone <= 1){
