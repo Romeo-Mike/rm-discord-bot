@@ -6,43 +6,43 @@ const db = low(adapter)
 
 module.exports = {
     addPoints: function (user, points) {
-        users = db.get("users").find({ 'name': user }).value();
+        users = db.get("users").find({ 'name': user.username }).value();
         console.log(users)
         if (users != null) {
-            console.log(user + " found, updating score");
+            console.log(user.username + " found, updating score");
             db.get("users")
-                .find({ 'name': user })
+                .find({ 'name': user.username })
                 .update('score', n => n + points)
                 .write()
         } else {
-            console.log(user + " not found, creating entry");
+            console.log(user.username + " not found, creating entry");
             db.get('users')
-                .push({ name: user, score: points })
+                .push({ name: user.username,avatar : user.avatar, id: user.id,score: points })
                 .write()
         }
 
     },
     resetPoints: function (user) {
-        users = db.get("users").find({ 'name': user }).value();
+        users = db.get("users").find({ 'name': user.username }).value();
         console.log(users)
         if (users != null) {
-            console.log(user + " found, clearing score");
+            console.log(user.username + " found, clearing score");
             db.get("users")
-                .find({ 'name': user })
+                .find({ 'name': user.username })
                 .update('score', n => n = 0)
                 .write()
         } else {
-            console.log(user + " not found");
+            console.log(user.username + " not found");
         }
     },
     getScore: function (user) {
-        users = db.get("users").find({ 'name': user }).value();
+        users = db.get("users").find({ 'name': user.username }).value();
         console.log(users)
         if (users != null) {
             return db.get("users")
-                .find({ 'name': user }).get("score").value();
+                .find({ 'name': user.username }).get("score").value();
         } else {
-            console.log(user + " not found");
+            console.log(user.username + " not found");
         }
     },
     getLeaderboard: function (count) {

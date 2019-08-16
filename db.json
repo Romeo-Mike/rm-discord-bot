@@ -2,51 +2,15 @@
   "users": [
     {
       "name": "Muppet...",
-      "score": 25
-    },
-    {
-      "name": "Skippy",
-      "score": 2
-    },
-    {
-      "name": "Fluppet",
-      "score": 1
-    },
-    {
-      "name": "Fred",
-      "score": 16
-    },
-    {
-      "name": "Joe",
-      "score": 0
-    },
-    {
-      "name": "Alleh",
-      "score": 64
-    },
-    {
-      "name": "Foxxy",
-      "score": 30
-    },
-    {
-      "name": "Randall",
-      "score": 2
-    },
-    {
-      "name": "Other guy",
-      "score": 44
-    },
-    {
-      "name": "Steve",
-      "score": 66
-    },
-    {
-      "name": "Ovenmit",
-      "score": 2
+      "avatar": "5ac1f93dfed842f5cd431ebcd54d427f",
+      "id": "199865081901613056",
+      "score": 14
     },
     {
       "name": "[RM] Joebanguly Berddydamagedov",
-      "score": 1
+      "avatar": "c1a05b4b40472b3ef18008975a5125c4",
+      "id": "172291280305389568",
+      "score": 2
     }
   ]
 }
