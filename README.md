@@ -18,3 +18,5 @@ Don't be silly and put passwords/keys in files that you do commit. If you do, it
 ## What the hell are we doing here?
 No idea. Perhaps:
 1. Automate the roulette/stats reset
+2. Iron Curtain
+3. Member timeout after BANG?
